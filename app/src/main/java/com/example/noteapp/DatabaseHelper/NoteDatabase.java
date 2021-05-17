@@ -1,4 +1,4 @@
-package com.example.noteapp;
+package com.example.noteapp.DatabaseHelper;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import androidx.annotation.Nullable;
 
 import com.example.noteapp.Util.Util;
+import com.example.noteapp.model.UserNote;
 
 public class NoteDatabase extends SQLiteOpenHelper {
     public NoteDatabase(@Nullable Context context) {
@@ -18,7 +19,7 @@ public class NoteDatabase extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         String CREATE_NOTE_TABLE = "CREATE TABLE " + Util.TABLE_NAME + "(" + Util.NOTE_ID +
-                "INTEGER PRIMARY KEY AUTOINCREMENT , " + Util.NOTE_CONTENT + "TEXT)";
+                " INTEGER PRIMARY KEY AUTOINCREMENT , " + Util.NOTE_CONTENT + "TEXT)";
         sqLiteDatabase.execSQL(CREATE_NOTE_TABLE);
 
     }
@@ -30,12 +31,16 @@ public class NoteDatabase extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    //insert note to database
-    public void insertNote(SQLiteDatabase db){
+    //insert note to database and judge if it successful
+    public long insertNote(UserNote userNote){
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         final ContentValues contentValues = new ContentValues();
-        contentValues.put(Util.NOTE_ID, 1);
-        contentValues.put(Util.NOTE_CONTENT, "note content");
-        db.insert(Util.TABLE_NAME, null, contentValues);
+        //contentValues.put(Util.NOTE_ID, userNote.getUser_id());
+        contentValues.put(Util.NOTE_CONTENT, userNote.getUserNote());
+        sqLiteDatabase.insert(Util.TABLE_NAME, null, contentValues);
+        long newRowId = sqLiteDatabase.insert(Util.TABLE_NAME, null, contentValues);
+        sqLiteDatabase.close();
+        return newRowId;
 
     }
 }
