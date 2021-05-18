@@ -4,7 +4,8 @@ public class UserNote {
     private int user_id;
     private String UserNote;
 
-    public UserNote(String userNote) {
+    public UserNote(int id, String userNote) {
+        user_id = id;
         UserNote = userNote;
     }
 

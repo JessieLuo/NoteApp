@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.noteapp.DatabaseHelper.NoteDatabase;
 import com.example.noteapp.model.UserNote;
@@ -24,7 +25,12 @@ public class EditNoteActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String userNote = enterNoteEditText.getText().toString();
-                long result = noteDatabase.insertNote(new UserNote(userNote));
+                long result = noteDatabase.insertNote(new UserNote(5, userNote));
+                if(result > 0){
+                    Toast.makeText(EditNoteActivity.this, "Success add content!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(EditNoteActivity.this, "Failed add content", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
